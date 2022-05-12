@@ -12,18 +12,25 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.nifcloud.mbaas.core.NCMBException
-import com.nifcloud.mbaas.core.NCMBObject
+// 1. NCMBExceptionとNCMBObjectを読み込みます
 
 @Composable
-fun FormScreen(navController: NavController, obj: NCMBObject) {
-    var objectId = obj.getObjectId()
-    var title by remember { mutableStateOf(if (objectId != null) obj.getString("title")!! else "") }
-    var body by remember { mutableStateOf(if (objectId != null) obj.getString("body")!! else "") }
+// 2. AnyをNCMBObjectに変更します
+fun FormScreen(navController: NavController, obj: Any) {
+    // 3. objectIdを入れます
+    var objectId = null;
+    // 4. titleをrememberで定義します。デフォルト値はNCMBObjectのtitleです
+    var title = "";
+    // 5. bodyをrememberで定義します。デフォルト値はNCMBObjectのbodyです
+    var body = "";
     val header = if (title == "") "新規作成" else "編集"
+    // 処理実行中のフラグ
     var progress by remember { mutableStateOf(false) }
+    // ダイアログ表示/非表示のフラグ
     var showDialog by remember { mutableStateOf(false) }
+    // 表示するメッセージ
     var message by remember { mutableStateOf("") }
+    // ダイアログを表示する処理
     if (showDialog) {
         AlertDialog(
             onDismissRequest = {},
@@ -39,18 +46,10 @@ fun FormScreen(navController: NavController, obj: NCMBObject) {
         )
     }
 
+    // 保存処理
     val save = {
         progress = true
-        try {
-            obj.put("title", title)
-            obj.put("body", body)
-            obj.save()
-            navController.navigate("list")
-        } catch(e: NCMBException){
-            Log.d("INFO",  e.message)
-            message = "タスクが保存できませんでした"
-            showDialog = true
-        }
+        // 6. 保存処理を記述します
         progress = false
     }
     Scaffold(

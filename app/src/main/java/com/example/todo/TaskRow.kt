@@ -14,16 +14,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.nifcloud.mbaas.core.NCMBObject
+// 1. NCMBObjectを読み込みます
 import org.json.JSONObject
 
 @Composable
-fun TaskRow(obj: NCMBObject, navController: NavController) {
+// 2. Any -> NCMBObjectにします
+fun TaskRow(obj: Any, navController: NavController) {
+    // 詳細画面に遷移する処理です
     val moveDetail = {
         val json = JSONObject()
-        obj.keys.forEach {key ->
-            json.put(key, obj.get(key)!!)
-        }
+        // 3. NCMBObjectを文字列化します
         navController.navigate("detail/task=${json.toString()}")
     }
     Row(
@@ -36,7 +36,8 @@ fun TaskRow(obj: NCMBObject, navController: NavController) {
                 moveDetail()
             }
     ) {
-        Text(obj.getString("title")!!, fontSize = 25.sp)
+        // 4. NCMBObjectのtitleを表示します
+        Text("", fontSize = 25.sp)
     }
 
 }

@@ -11,19 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
-import com.nifcloud.mbaas.core.NCMBCallback
-import com.nifcloud.mbaas.core.NCMBObject
-import com.nifcloud.mbaas.core.NCMBQuery
+// 1. NCMBCallback/NCMBObject/NCMBQueryを読み込みます
 
 @Composable
 fun ListScreen(navController: NavController) {
-    var ary = remember { mutableStateOf<List<NCMBObject>>(emptyList()) }
-    val query = NCMBQuery.forObject("Task")
-    query.findInBackground(NCMBCallback { e, results ->
-        if (e == null) {
-            ary.value = results as List<NCMBObject>
-        }
-    })
+    // 2. aryをrememberのNCMBObjectのListで定義します。デフォルトは空です
+    var ary = listOf<Int>()
+    // 3. NCMBQueryを定義します。クラス名はTaskです。
+    val query = null
+    // 4. 検索を実行して、結果をaryに格納します
 
     Scaffold(
         topBar = {
@@ -45,7 +41,8 @@ fun ListScreen(navController: NavController) {
         content = {
             Column {
                 LazyColumn {
-                    items(ary.value) { obj ->
+                    // 5. ary -> ary.value に書き直してください
+                    items(ary) { obj ->
                         TaskRow(obj, navController = navController)
                     }
                 }

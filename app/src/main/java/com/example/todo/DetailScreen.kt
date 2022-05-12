@@ -11,11 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.nifcloud.mbaas.core.NCMBObject
 import org.json.JSONObject
+// 1. NCMBObjectをインポート
 
 @Composable
-fun DetailScreen(navController: NavController, obj: NCMBObject) {
+// 2. Any -> NCMBObjectに変更します
+fun DetailScreen(navController: NavController, obj: Any) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -26,9 +27,7 @@ fun DetailScreen(navController: NavController, obj: NCMBObject) {
                     IconButton(
                         onClick = {
                             val json = JSONObject()
-                            obj.keys.forEach {key ->
-                                json.put(key, obj.get(key)!!)
-                            }
+                            // 3. NCMBObjectを文字列化します
                             navController.navigate("edit/task=${json.toString()}")
                         }
                     ){
@@ -36,7 +35,7 @@ fun DetailScreen(navController: NavController, obj: NCMBObject) {
                     }
                     IconButton(
                         onClick = {
-                            obj.delete()
+                            // 4. NCMBObjectを削除します
                             navController.navigate("list")
                         }
                     ){
@@ -47,11 +46,13 @@ fun DetailScreen(navController: NavController, obj: NCMBObject) {
         },
         content = {
             Column {
-                Text(text = obj.getString("title")!!,
+                // 5. NCMBObjectのtitleを表示します
+                Text(text = "",
                     fontSize = 35.sp,
                     modifier = Modifier.padding(5.dp)
                 )
-                Text(text = obj.getString("body")!!,
+                // 6. NCMBObjectのbodyを表示します
+                Text(text = "",
                     fontSize = 30.sp,
                     modifier = Modifier.padding(5.dp)
                 )
